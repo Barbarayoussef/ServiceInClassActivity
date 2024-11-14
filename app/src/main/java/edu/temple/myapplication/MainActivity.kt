@@ -13,7 +13,7 @@ import android.widget.Button
 class MainActivity : AppCompatActivity() {
 
 
-//adding comment
+
     var timerBinder : TimerService.TimerBinder? = null
 
     val serviceConnection = object: ServiceConnection {
@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    //trying
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
