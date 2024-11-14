@@ -8,16 +8,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.view.View
 import android.widget.Button
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
-
-
+    lateinit var timerTextView: TextView
     var timerBinder : TimerService.TimerBinder? = null
     val serviceConnection = object: ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             timerBinder = service as TimerService.TimerBinder
+            timerBinder!!.setHandler(timerHandler)
             isconnected=true
         }
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
     var isconnected=false
     val timerHandler= Handler(Looper.getMainLooper()){
+        timerTextView.text=it.what.toString()
         true
     }
 
@@ -39,8 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
+        timerTextView=findViewById(R.id.textView)
         bindService(
             Intent(this, TimerService::class.java),
             serviceConnection,
