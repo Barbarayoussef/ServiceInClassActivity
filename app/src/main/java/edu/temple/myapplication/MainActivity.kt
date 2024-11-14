@@ -13,7 +13,7 @@ import android.widget.Button
 class MainActivity : AppCompatActivity() {
 
 
-
+//adding comment
     var timerBinder : TimerService.TimerBinder? = null
 
     val serviceConnection = object: ServiceConnection {
