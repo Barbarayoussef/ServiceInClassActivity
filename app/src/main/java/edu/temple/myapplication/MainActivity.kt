@@ -15,21 +15,31 @@ class MainActivity : AppCompatActivity() {
 
 
     var timerBinder : TimerService.TimerBinder? = null
-
     val serviceConnection = object: ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             timerBinder = service as TimerService.TimerBinder
+            isconnected=true
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
             timerBinder = null
+            isconnected=false
         }
 
     }
+    var isconnected=false
+    val timerHandler= Handler(Looper.getMainLooper()){
+        true
+    }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
 
         bindService(
             Intent(this, TimerService::class.java),
@@ -37,14 +47,20 @@ class MainActivity : AppCompatActivity() {
             BIND_AUTO_CREATE
         )
 
-        findViewById<Button>(R.id.startButton).setOnClickListener {
-            timerBinder?.start(100)
-        }
+        val button = findViewById<Button>(R.id.startButton)
 
-        findViewById<Button>(R.id.pauseButton).setOnClickListener {
-            timerBinder?.pause()
+       button.setOnClickListener {
+            if(isconnected && button.text=="Start"){
+            timerBinder?.start(100)
+                button.text="Pause"
+
         }
-        
+           else if(isconnected && button.text=="Pause"){
+               timerBinder?.pause()
+                button.text="Start"
+           }
+       }
+
         findViewById<Button>(R.id.stopButton).setOnClickListener {
             timerBinder?.stop()
         }
